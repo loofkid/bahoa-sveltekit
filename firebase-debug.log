@@ -1,0 +1,25 @@
+[debug] [2022-12-27T19:50:08.825Z] ----------------------------------------------------------------------
+[debug] [2022-12-27T19:50:08.825Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2022-12-27T19:50:08.826Z] CLI Version:   11.19.0
+[debug] [2022-12-27T19:50:08.826Z] Platform:      darwin
+[debug] [2022-12-27T19:50:08.826Z] Node Version:  v17.3.1
+[debug] [2022-12-27T19:50:08.827Z] Time:          Tue Dec 27 2022 14:50:08 GMT-0500 (Eastern Standard Time)
+[debug] [2022-12-27T19:50:08.827Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-12-27T19:50:08.857Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-12-27T19:50:08.858Z] > authorizing via signed-in user (loofkid@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/kentloofbourrow/source/repos/bahoa-sveltekit
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
