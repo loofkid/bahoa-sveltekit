@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+    import {browser} from "$app/env";
 	import { faAngleDown, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
     import type { PageData } from './$types';
 	import Logo from "$lib/Logo.svelte";

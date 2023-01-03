@@ -2,7 +2,7 @@
 	import { faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 	import Logo from "$lib/Logo.svelte";
 	import Icon from "svelte-awesome";
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 
     let windowWidth: number;
 
