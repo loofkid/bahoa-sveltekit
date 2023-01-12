@@ -15,10 +15,12 @@ importers:
       '@tailwindcss/forms': ^0.5.3
       '@tailwindcss/line-clamp': ^0.4.2
       '@tailwindcss/typography': ^0.5.8
+      '@types/w3c-css-typed-object-model-level-1': ^20180410.0.4
       '@typescript-eslint/eslint-plugin': ^5.47.1
       '@typescript-eslint/parser': ^5.47.1
       autoprefixer: ^10.4.13
       breakpoint-helper: ^1.0.4
+      css-typed-om: ^0.4.0
       eslint: ^8.30.0
       eslint-config-prettier: ^8.3.0
       eslint-plugin-svelte3: ^4.0.0
@@ -45,7 +47,9 @@ importers:
       '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.4
       '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.4
       '@tailwindcss/typography': 0.5.8_tailwindcss@3.2.4
+      '@types/w3c-css-typed-object-model-level-1': 20180410.0.4
       breakpoint-helper: 1.0.4
+      css-typed-om: 0.4.0
       firebase: 9.15.0
       pocketbase: 0.9.1
       svelte-awesome: 3.0.1_svelte@3.55.0
@@ -866,6 +870,10 @@ packages:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
     dev: true
 
+  /@types/w3c-css-typed-object-model-level-1/20180410.0.4:
+    resolution: {integrity: sha512-qyX4FlHFRsCvXdmrJGyWtV/10nOMsoHaIMqINtMf2bWaOLduHU5Y69NMQwP7hzJOduSBB7t50tCW6AA6VATfCQ==}
+    dev: false
+
   /@typescript-eslint/eslint-plugin/5.47.1_txmweb6yn7coi7nfrp22gpyqmy:
     resolution: {integrity: sha512-r4RZ2Jl9kcQN7K/dcOT+J7NAimbiis4sSM9spvWimsBvDegMhKLA5vri2jG19PmIPbDjPeWzfUPQ2hjEzA4Nmg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -1195,6 +1203,11 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /css-typed-om/0.4.0:
+    resolution: {integrity: sha512-wa2sUHPTAol+SmOoeaKv20PZ+6wiJIvLG+z5NFnV1trOIcSN0LLxdrMriXKo9wkdABshcfMToT4CmQ/z3CPlcg==}
+    engines: {node: '>=4.0.0'}
+    dev: false
 
   /cssesc/3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}

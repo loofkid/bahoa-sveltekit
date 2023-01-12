@@ -1,4 +1,5 @@
 <script lang="ts">
+	import cssPolyfill from 'css-typed-om';
     import {browser} from "$app/env";
 	import { faAngleDown, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
     import type { PageData } from './$types';
@@ -16,20 +17,19 @@
     let header: HTMLElement;
     let content: HTMLElement;
 
+    let scrollTracker: HTMLElement;
+
+
+    let scrollTimeline: ScrollTimeline;
+
     $: if (browser) maxScrollHeight = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
                    document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );
 
     onMount(() => {
-        headerHeight = windowHeight;
-
-        // const observer = new IntersectionObserver(onIntersect, {
-        //     root: null,
-        //     rootMargin: '0px',
-        //     threshold: 0.5
-        // });
-        // observer.observe(content);
     });
 
+
+    $: console.log(scrollTimeline?.currentTime);
     // const onIntersect = (entries: IntersectionObserverEntry[]) => {
     //     entries.forEach((entry) => {
     //         if (entry.isIntersecting) {
@@ -43,8 +43,10 @@
     const scrollHandler = (event: Event) => {
         // console.log(content.getBoundingClientRect().top);
         // console.log(maxScrollHeight);
-        let scroll = content.getBoundingClientRect().top;
-        headerHeight = scroll;
+        requestAnimationFrame(() => {
+            let scroll = content.getBoundingClientRect().top;
+            headerHeight = scroll;
+        });
     }
 
     const windowResize = () => {
@@ -67,6 +69,7 @@
 
 <svelte:window bind:innerHeight={windowHeight} bind:innerWidth={windowWidth} on:resize={windowResize} on:scroll={scrollHandler} />
 
+<div class="fixed inset-y-auto inset-x-0 h-2 bg-slate-700 dark:bg-slate-300 z-[1000] scale-0" bind:this={scrollTracker}></div>
 <div >
     <div class="w-full p-4 bg-zinc-500 dark:bg-zinc-700 
         grid mb-8 fixed z-50" 

@@ -1,0 +1,1 @@
+import{N as r,z as c}from"./index-c6def6da-0dbad25a.js";const n=async({parent:a,fetch:l,params:f})=>{const{firebaseAuth:u,firestoreDatabase:t}=await a(),o=r(t,"service_features"),e=(await c(o)).docs.map(s=>s.data());return console.log(e),{features:e}},p=Object.freeze(Object.defineProperty({__proto__:null,load:n},Symbol.toStringTag,{value:"Module"}));export{p as _,n as l};
