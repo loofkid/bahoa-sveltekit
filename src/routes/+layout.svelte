@@ -3,6 +3,7 @@
     import "../app.css";
 
     import {page} from '$app/stores';
+	import PageTransition from "$lib/PageTransition.svelte";
     
 </script>
 

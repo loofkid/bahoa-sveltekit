@@ -3,6 +3,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore/lite";
 import { getAuth } from "firebase/auth";
 import type { LayoutLoad, LayoutLoadEvent } from './$types';
+import type { SvelteComponentTyped, ComponentProps } from "svelte";
+import type LoggedInMenuItem from "$lib/LoggedInMenuItem.svelte";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,11 +27,37 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// type ComponentProps<T extends SvelteComponentTyped> = T extends SvelteComponentTyped<infer R> ? R : unknown;
+
+const menuItems = [
+  {
+      name: "Home",
+      icon: "house",
+      link: "/smokers",
+  },
+  {
+      name: "Profile",
+      icon: "user",
+      link: "/profile",
+  },
+  {
+      name: "Settings",
+      icon: "cog",
+      link: "/settings",
+  },
+  {
+      name: "Logout",
+      icon: "right-from-bracket",
+      action: () => auth.signOut(),
+  },
+];
+
 export const load: LayoutLoad = (({data}: LayoutLoadEvent) => {
     return {...data, 
         firebaseApp: app,
         // firebaseAnalytics: analytics,
         firestoreDatabase: db,
         firebaseAuth: auth,
+        menuItems: menuItems,
     }
 }) satisfies LayoutLoad;

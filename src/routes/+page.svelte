@@ -1,123 +1,115 @@
 <script lang="ts">
-    import {browser} from "$app/env";
-	import { faAngleDown, faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+	import { faAngleDown, faRightToBracket, faUserPlus, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
     import type { PageData } from './$types';
 	import Logo from "$lib/Logo.svelte";
-	import PopupCard from '$lib/PopupCard.svelte';
 	import Icon from 'svelte-awesome';
 	import { onMount } from 'svelte';
-    import { fade } from 'svelte/transition';
-
+    import { Motion, useViewportScroll, AnimateSharedLayout } from 'svelte-motion';
+    import toPx from "to-px";
+    import { fly } from 'svelte/transition';
+    
     let windowHeight: number;
     let windowWidth: number;
-    let headerHeight: number;
-    let featuresHeight: number;
-    let maxScrollHeight: number;
-    let header: HTMLElement;
-    let content: HTMLElement;
 
-    $: if (browser) maxScrollHeight = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
-                   document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );
+    windowHeight = toPx('100vh');
+    windowWidth = toPx('100vw');
+
+    const recalcWindow = () => {
+        windowHeight = toPx('100vh');
+        windowWidth = toPx('100vw');
+    }
+
+    const scrollBreakpoint = 0.35
+
+    $: headerBreakpoint = scrollBreakpoint * windowHeight;
+    $: buttonsBreakpoint = headerBreakpoint + .25 * windowHeight;
+
+
+    const {scrollYProgress} = useViewportScroll();
+
+
+    $: scrollYLeft = (1 - ($scrollYProgress ?? 0)) * windowHeight;
+    $: console.log(scrollYLeft);
 
     onMount(() => {
-        headerHeight = windowHeight;
-
-        // const observer = new IntersectionObserver(onIntersect, {
-        //     root: null,
-        //     rootMargin: '0px',
-        //     threshold: 0.5
-        // });
-        // observer.observe(content);
+        windowHeight = toPx('100vh');
+        windowWidth = toPx('100vw');
     });
 
-    // const onIntersect = (entries: IntersectionObserverEntry[]) => {
-    //     entries.forEach((entry) => {
-    //         if (entry.isIntersecting) {
-    //             // entry.target.addEventListener('scroll', scrollHandler);
-    //         } else {
-    //             headerHeight = windowHeight;
-    //         }
-    //     });
-    // }
-
-    const scrollHandler = (event: Event) => {
-        // console.log(content.getBoundingClientRect().top);
-        // console.log(maxScrollHeight);
-        let scroll = content.getBoundingClientRect().top;
-        headerHeight = scroll;
-    }
-
-    const windowResize = () => {
-        windowHeight = window.innerHeight;
-        if (window.scrollY === 0) {
-            headerHeight = windowHeight;
-        }
-    }
-
     export let data: PageData;
+
+    $: gridTemplateColumns = scrollYLeft > headerBreakpoint ? '1fr' : '1fr 1fr';
+    $: gridTemplateRows = scrollYLeft > headerBreakpoint ? '1fr 1fr' : '1fr';
 
     const tailwindBreakpoints = data.tailwindBreakpoints;
 
     const tailwindSizing = data.tailwindSizing;
+
+    data.firebaseAuth.onAuthStateChanged(() => {
+        data = {...data};
+    });
 </script>
 
 <svelte:head>
     <title>Home | Bà Hỏa Smart Smokers</title>
 </svelte:head>
 
-<svelte:window bind:innerHeight={windowHeight} bind:innerWidth={windowWidth} on:resize={windowResize} on:scroll={scrollHandler} />
+<svelte:window on:resize={() => recalcWindow()} />
+<svelte:body  />
 
-<div >
-    <div class="w-full p-4 bg-zinc-500 dark:bg-zinc-700 
-        grid mb-8 fixed z-50" 
-        class:grid-cols-1={headerHeight > 210}
-        class:grid-cols-2={headerHeight <= 210}
-        class:[grid-template-rows:_2fr_1fr_2rem]={headerHeight > 210}
-        class:grid-rows-1={headerHeight <= 210}
-        class:justify-between={headerHeight <= 210}
-        class:[height:var(--header-height)]={headerHeight > 210}
-        class:h-24={headerHeight <= 210}
-        style="--header-height:{headerHeight ?? windowHeight}px" bind:this={header}>
-        <!-- tailwind: [grid-template-rows:_2fr_1fr_2rem]-->
-        <a class="flex justify-center transition-all" href="/" transition:fade
-            class:p-5={headerHeight > 210}>
-            <Logo height={headerHeight > 198 ? (headerHeight ?? windowHeight)/3 : 70}></Logo>
-            <h1 class="text-3xl text-zinc-800 dark:text-zinc-300 font-bold font-sans sr-only">Bà Hỏa</h1>
-        </a>
-        <div class="flex items-center transition-all" transition:fade
-            class:justify-center={headerHeight > 210}
-            class:justify-end={headerHeight <= 210}
-            class:flex-col={headerHeight > 265}>
-            <a href="/signup" title="sign up" transition:fade><button class="h-16 lg:w-48 bg-orange-500 text-white 
-                    text-2xl rounded-full shadow-lg transition-all flex justify-center items-center"
-                    class:w-16={headerHeight <= 265}
-                    class:w-48={headerHeight > 265}>
-                {#if headerHeight <= 265 && browser && tailwindBreakpoints.lg >= windowWidth}
-                <Icon data={faUserPlus} scale={1.8} label="sign up button" />
-                {:else}
-                Sign Up!
-                {/if}
-            </button></a>
-            <a href="/login" class="text-orange-500 drop-shadow-sm text-2xl my-2 mx-8 lg:m-4 transition-all" title="log in" transition:fade>
-                {#if headerHeight <= 265 && browser && tailwindBreakpoints.lg >= windowWidth}
-                <Icon data={faRightToBracket} scale={1.8} label="log in button" />
-                {:else}
-                Login
-                {/if}
-            </a>
-        </div>
-        {#if (headerHeight > 350 && ((content?.getBoundingClientRect().top === 0 ? undefined : content.getBoundingClientRect().top) ?? maxScrollHeight) >= maxScrollHeight)}
-        <button class="grid justify-center items-center 
-            text-zinc-800 dark:text-zinc-300 h-8" type="button" transition:fade on:click={() => window.scroll({left: 0, top: content.getBoundingClientRect().top, behavior: 'smooth'})}>
-            <Icon data={faAngleDown} scale={2}></Icon>
-        </button>
-        {/if}
-    </div>
-    <div class="w-full py-4 grid items-start [margin-top:var(--header-height)] z-0" style="--header-height:{windowHeight}px" on:scroll={scrollHandler} bind:this={content}>
-        <div class="grid [grid-template-columns:_repeat(auto-fill,_minmax(20rem,_1fr))] items-start justify-center" bind:clientHeight={featuresHeight}>
-        {#each data.features as { title, text, icon }}
-            <PopupCard {title} {text} {icon} {tailwindBreakpoints} {tailwindSizing} />
-        {/each}
-        </div>
+<div class="container" style="--header-height:{scrollYLeft !== undefined ? Math.max(scrollYLeft, toPx('25vh'), 220) : toPx('100vh')}px;">
+    <AnimateSharedLayout type="crossfade">
+        <Motion let:motion={grid} layout transition={{ duration: 0.1 }}>
+            <div use:grid class="inset-0 fixed h-[var(--header-height)] bg-slate-400 dark:bg-slate-600 grid min-h-24 p-8 [grid-template-columns:_var(--grid-template-columns)] [grid-template-rows:_var(--grid-template-rows)]" 
+                class:justify-center={scrollYLeft > headerBreakpoint}
+                class:items-stretch={scrollYLeft > headerBreakpoint}
+                class:justify-between={scrollYLeft <= headerBreakpoint}
+                class:items-center={scrollYLeft <= headerBreakpoint}
+                style={`--grid-template-columns:${gridTemplateColumns};--grid-template-rows:${gridTemplateRows}`}>
+                <Motion let:motion={svg} layout>
+                    <div class="grid items-center" 
+                        class:justify-center={scrollYLeft > headerBreakpoint} 
+                        class:justify-start={scrollYLeft <= headerBreakpoint} use:svg><Logo></Logo></div>
+                </Motion>
+                <div class="grid grid-cols-1 grid-rows-1">
+                    {#if data.firebaseAuth.currentUser}
+                    <div class="grid grid-rows-2 justify-center gap-4 [grid-column:1] [grid-row:1]"  transition:fly={{x: 200}}>
+                        <a href="/smokers" class="h-16 rounded-full text-white shadow flex justify-between items-center bg-orange-500 px-6 place-self-end"><span>Welcome {data.firebaseAuth.currentUser.displayName ? data.firebaseAuth.currentUser.displayName : data.firebaseAuth.currentUser.email}!</span><Icon data={faChevronRight} scale={2} /></a>
+                        <button type="button" class="h-16 border-2 border-orange-500 dark:border font-extrabold shadow bg-slate-300 dark:bg-transparent rounded-l-full rounded-r-full text-orange-500 flex justify-between items-center px-6" on:click={() => data.firebaseAuth.signOut()}><Icon data={faChevronLeft} scale={2} /><span class="ml-2">Sign Out</span></button>
+                    </div>
+                    {:else}
+                    <Motion let:motion={grid2} layout transition={{ duration: 0.1 }}>
+                        <div class="grid items-center [grid-column:1] [grid-row:1]" use:grid2 class:justify-center={scrollYLeft > headerBreakpoint} class:justify-end={scrollYLeft <= headerBreakpoint}>
+                            <Motion let:motion={grid3} layout transition={{ duration: 0.1 }}>
+                                <div class="grid justify-center items-center gap-8" class:grid-flow-row={scrollYLeft > buttonsBreakpoint} class:grid-flow-col={scrollYLeft <= buttonsBreakpoint} use:grid3>
+                                    <Motion let:motion={button1} layout transition={{ duration: 0.2 }}>
+                                        <a use:button1 class="h-16 rounded-l-full rounded-r-full bg-orange-500 text-white shadow flex justify-center items-center" href="/auth/signup" title="Sign Up" class:w-48={scrollYLeft > headerBreakpoint} class:w-16={scrollYLeft <= headerBreakpoint}>
+                                            {#if scrollYLeft > headerBreakpoint && windowWidth > tailwindBreakpoints.lg}
+                                                Sign Up!
+                                            {:else}
+                                                <Icon scale={1.5} data={faUserPlus} />
+                                            {/if}
+                                        </a>
+                                    </Motion>
+                                    <Motion let:motion={button2} layout transition={{ duration: 0.2 }}>
+                                        <a use:button2 class="h-16 border-2 border-orange-500 dark:border font-extrabold shadow bg-slate-300 dark:bg-transparent rounded-l-full rounded-r-full text-orange-500 flex justify-center items-center" href="/auth/login" title="Log In" class:w-48={scrollYLeft > headerBreakpoint} class:w-16={scrollYLeft <= headerBreakpoint}>
+                                            {#if scrollYLeft > headerBreakpoint && windowWidth > tailwindBreakpoints.lg}
+                                                Log In
+                                            {:else}
+                                                <Icon scale={1.5} data={faRightToBracket} />
+                                            {/if}
+                                        </a>
+                                    </Motion>
+                                </div>
+                            </Motion>
+                        </div>
+                    </Motion>
+                    {/if}
+                </div>
+            </div>
+        </Motion>
+    </AnimateSharedLayout>
+    <div class="mt-[var(--header-height)] h-[100vh] w-[100vw] bg-slate-300 dark:bg-slate-700">
+
     </div>
 </div>

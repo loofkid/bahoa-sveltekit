@@ -10,7 +10,7 @@
         "firebase-debug.*.log"
       ],
       "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run build"
+        "pnpm --prefix \"$RESOURCE_DIR\" run build"
       ]
     }
   ,
@@ -30,15 +30,19 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "*",
         "function": "sveltePublicSSR"
       },
       {
-        "source": "/my-smokers/**",
+        "source": "/auth/**",
+        "function": "sveltePublicSSR"
+      },
+      {
+        "source": "**",
         "function": "svelteSSR"
       }
     ],
-    "predeploy": ["npm run build"]
+    "predeploy": ["pnpm run build"]
   },
   "storage": {
     "rules": "storage.rules"
