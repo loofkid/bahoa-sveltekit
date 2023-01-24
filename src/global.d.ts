@@ -1,3 +1,5 @@
+/// <reference types="svelte-motion" />
+
 declare interface ServiceFeatures {
     title: string;
     text: string;

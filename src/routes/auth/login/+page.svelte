@@ -7,6 +7,7 @@
     import type { PageData } from './$types';
     import { Motion, AnimatePresence } from 'svelte-motion';
 	import { FirebaseError } from 'firebase/app';
+	import { SvelteComponent } from 'svelte';
     let username: string;
     let password: string;
     let rememberMe: boolean = false;

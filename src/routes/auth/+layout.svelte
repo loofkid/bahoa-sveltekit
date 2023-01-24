@@ -61,13 +61,13 @@
                         [grid-column:1] [grid-row:1] h-16 w-16 
                         sm:w-auto bg-orange-500 sm:px-8 text-white shadow overflow-hidden" on:click|self={() => showMenu = !showMenu} transition:fly={{x: 200}} bind:this={menuButton}>
                         {#if windowWidth > data.tailwindBreakpoints.sm}
-                        <div class="flex justify-center items-center overflow-hidden" on:click={() => showMenu = !showMenu}>
+                        <div class="flex justify-center items-center overflow-hidden" on:click={() => showMenu = !showMenu} on:keypress>
                             Hello {data.firebaseAuth.currentUser.displayName ? data.firebaseAuth.currentUser.displayName : data.firebaseAuth.currentUser.email}!
                         </div>
                         {:else}
-                        <div class="rounded-full bg-clip-border flex justify-center items-center w-16 h-16" on:click={() => showMenu = !showMenu}>
+                        <div class="rounded-full bg-clip-border flex justify-center items-center w-16 h-16" on:click={() => showMenu = !showMenu} on:keypress>
                             {#if data.firebaseAuth.currentUser.photoURL}
-                            <img class="rounded-full" src={data.firebaseAuth.currentUser.photoURL} alt="Profile Picture" />
+                            <img class="rounded-full" src={data.firebaseAuth.currentUser.photoURL} title="Profile Picture" alt="user"/>
                             {:else}
                             <Icon data={faBars} scale={1.5} />
                             {/if}

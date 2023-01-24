@@ -11,6 +11,7 @@
 	import SignupPage2 from '$lib/signup-pages/SignupPage2.svelte';
     import { signupStore } from '$lib/signupStore';
 	import { onMount } from 'svelte';
+	import type { SvelteComponent } from 'svelte';
 
     let showPasswordRules = false;
     let usernameInput: HTMLInputElement;
@@ -20,7 +21,7 @@
 
     $: signupPage = data.page;
 
-    const pages = [
+    const pages: typeof SvelteComponent[] = [
         SignupPage1,
         SignupPage2,
     ]
@@ -64,10 +65,7 @@
 
     const page1Variants: Variants = {
         enter: (direction: boolean) => {
-            if (signupPage === 0)
-                return {x: 0, opacity: 1};
-            else
-                return {x: direction ? 1000 : -1000, opacity: 0};
+            return {x: direction ? 1000 : -1000, opacity: 0};
         },
         center: {x: 0, opacity: 1},
         exit: (direction: boolean) => ({x: direction ? -1000 : 1000, opacity: 0})
@@ -91,7 +89,7 @@
     <div class="grid grid-cols-1 grid-rows-1 relative
         lg:border-2 lg:border-orange-500 w-full lg:w-[30rem] 
         rounded-xl lg:p-8 overflow-clip items-start">
-    <AnimatePresence list={[{ key: signupPage, component: pages[signupPage] }]} let:item>
+    <AnimatePresence list={[{ key: signupPage, component: pages[signupPage] }]} let:item initial={false}>
         <Motion custom={signupPage === 0 ? page1Direction : page2Direction} let:motion variants={signupPage === 0 ? page1Variants : page2Variants} initial="enter" animate="center" exit="exit" transition={{duration: 0.5, easings:['easeIn']}}>
         <svelte:component this={item.component} pageMotion={motion} on:proceed={onProceed} bind:usernameInput={usernameInput} bind:passwordInput={passwordInput} />
         </Motion>
