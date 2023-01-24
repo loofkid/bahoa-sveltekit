@@ -2,7 +2,8 @@
 	import { faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 	import Logo from "$lib/Logo.svelte";
 	import Icon from "svelte-awesome";
-	import { browser } from '$app/environment';
+
+    export let loggedIn: false;
 
     let windowWidth: number;
 
@@ -55,29 +56,3 @@
 <svelte:window bind:innerWidth={windowWidth} />
 
 
-<div class="w-full p-4 bg-zinc-500 dark:bg-zinc-700 
-    grid mb-8 z-50 grid-cols-2 grid-rows-1 justify-between items-center h-24">
-    <a class="flex justify-start transition-all" href="/">
-        <Logo height={70}></Logo>
-        <h1 class="text-3xl text-zinc-800 dark:text-zinc-300 font-bold font-sans sr-only">Bà Hỏa</h1>
-    </a>
-    <div class="flex items-center justify-end">
-        <a href="/signup" title="sign up">
-            <button class="h-16 lg:w-48 bg-orange-500 text-white 
-            text-2xl rounded-full shadow-lg w-16 flex justify-center items-center">
-                {#if browser && tailwindBreakpoints.lg >= windowWidth}
-                <Icon data={faUserPlus} scale={1.8} label="sign up button" />
-                {:else}
-                Sign Up!
-                {/if}
-            </button>
-        </a>
-        <a href="/login" class="text-orange-500 drop-shadow-sm text-2xl m-2 mx-4 lg:m-4 transition-all" title="log in">
-            {#if browser && tailwindBreakpoints.lg >= windowWidth}
-            <Icon data={faRightToBracket} scale={1.8}></Icon>
-            {:else}
-            Login
-            {/if}
-        </a>
-    </div>
-</div>

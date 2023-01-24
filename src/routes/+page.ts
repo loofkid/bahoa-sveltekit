@@ -1,12 +1,16 @@
-import PocketBase from 'pocketbase';
 import type { PageLoad } from './$types';
+import { collection, getDocs } from 'firebase/firestore/lite';
+import { signInAnonymously } from 'firebase/auth';
 
-const client = new PocketBase('https://bahoa.kentloofbourrow.com');
-
-export const load: PageLoad = async ({ fetch, params }) => {
-    const features: ServiceFeatures[] = await client.collection('service_features').getFullList<ServiceFeatures>();
+export const load: PageLoad = async ({ parent, fetch, params }) => {
+    globalThis.fetch = fetch;
+    const parentData = await parent();
+    const { firestoreDatabase: db, firebaseAuth: auth } = parentData;
+    // await signInAnonymously(auth);
+    const featuresCol = collection(db, 'service_features');
+    const features = (await getDocs(featuresCol)).docs.map(doc => doc.data());
     console.log(features);
-    return {
+    return { ...parentData,
         features: features,
     }
 }
