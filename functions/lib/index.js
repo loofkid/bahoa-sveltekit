@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.svelteSSR = void 0;
+const functions = require("firebase-functions");
+let svelteSSRServer;
+exports.svelteSSR = functions.region("us-central1").https.onRequest(async (request, response) => {
+    if (!svelteSSRServer) {
+        functions.logger.info("Initialising SvelteKit SSR entry");
+        svelteSSRServer = (await Promise.resolve().then(() => require("../lib/svelteSSR/index"))).default;
+        functions.logger.info("SvelteKit SSR entry initialised!");
+    }
+    functions.logger.info("Requested resource: " + request.originalUrl);
+    return svelteSSRServer(request, response);
+});
+// // Start writing functions
+// // https://firebase.google.com/docs/functions/typescript
+//
+// export const helloWorld = functions.https.onRequest((request, response) => {
+//   functions.logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });
+//# sourceMappingURL=index.js.map
