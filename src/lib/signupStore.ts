@@ -3,8 +3,7 @@ import { writable, type Writable } from 'svelte/store';
 export const signupStore: Writable<SignUpData> = writable({
     email: '',
     password: '',
-    firstName: '',
-    lastName: '',
+    name: '',
     address1: '',
     address2: '',
     city: '',

@@ -10,8 +10,7 @@ declare interface ServiceFeatures {
 declare interface SignUpData {
     email: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    name: string;
     address1: string;
     address2: string;
     city: string;

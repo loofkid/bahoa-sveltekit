@@ -74,11 +74,11 @@
         try {
             const newUser = await createUserWithEmailAndPassword(data.firebaseAuth, $signupStore.email, $signupStore.password);
             const avatar = createAvatar(loreleiNeutral, {
-                seed: `${$signupStore.firstName} ${$signupStore.lastName}`,
+                seed: $signupStore.name,
             });
             const avatarSvg = await avatar.toDataUri();
             const avatarUrl = await uploadString(ref(data.firebaseStorage, `profilePhotos/${newUser.user.uid}/lorelei-neutral.svg` ), avatarSvg, 'data_url');
-            await updateProfile(newUser.user, {displayName: `${$signupStore.firstName} ${$signupStore.lastName}`, photoURL: await getDownloadURL(avatarUrl.ref)});
+            await updateProfile(newUser.user, {displayName: $signupStore.name, photoURL: await getDownloadURL(avatarUrl.ref)});
             delete $signupStore.email;
             delete $signupStore.password;
             const docRef = await addDoc(collection(data.firestoreDatabase, "users"), {
@@ -88,6 +88,7 @@
                 updatedAt: new Date(),
             });
             console.log("Document written with ID: ", docRef.id);
+            goto('/smokers', {invalidateAll: true,})
         } catch (error) {
             console.error('error on authpages', error);
         }

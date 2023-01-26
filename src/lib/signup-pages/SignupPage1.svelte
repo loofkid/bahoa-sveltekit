@@ -24,14 +24,14 @@
     $: ruleSpecial = /[^a-zA-Z0-9]/.test($signupStore.password);
 </script>
 
-<form use:pageMotion class="grid grid-cols-1 [grid-template-rows:_3.5rem_auto_3.5rem] lg:[grid-template-rows:_1fr_auto_1fr] gap-1 lg:gap-4 items-center [grid-column:1] [grid-row:1]" on:submit|preventDefault|stopPropagation={() => dispatch("proceed")}>
+<form use:pageMotion class="grid grid-cols-1 [grid-template-rows:_3.5rem_auto_3.5rem] lg:[grid-template-rows:_1fr_auto_1fr] gap-1 lg:gap-4 items-center [grid-column:1] [grid-row:1]" on:submit|preventDefault|stopPropagation={() => dispatch("proceed")} enterkeyhint="next">
     <input type="email" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
         dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="email" on:blur={() => usernameInput.checkValidity()} bind:value={$signupStore.email} bind:this={usernameInput} required inputmode="email" autocorrect="off" />
+        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="email" on:blur={() => usernameInput.checkValidity()} bind:value={$signupStore.email} bind:this={usernameInput} required inputmode="email" autocorrect="off" autocomplete="email" />
     <div class="grid items-center">
         <input type="password" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
         dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="password" on:focus={() => showPasswordRules = true} on:blur={() => passwordInput.checkValidity()} bind:value={$signupStore.password} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*$" required autocorrect="off" bind:this={passwordInput} />
+        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="password" on:focus={() => showPasswordRules = true} on:blur={() => passwordInput.checkValidity()} bind:value={$signupStore.password} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*$" required autocorrect="off" bind:this={passwordInput} autocomplete="new-password" />
         <Motion let:motion={layout}>
         <div use:layout class="flex justify-between text-sm text-zinc-800 dark:text-zinc-300 ml-1">
             <button on:click={() => showPasswordRules = !showPasswordRules} type="button" class="">
