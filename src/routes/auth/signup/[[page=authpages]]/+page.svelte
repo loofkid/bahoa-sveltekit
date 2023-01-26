@@ -95,12 +95,6 @@
         }
     }
 
-    $: ruleLength = $signupStore.password?.length >= 8;
-    $: ruleLowercase = /[a-z]/.test($signupStore.password);
-    $: ruleUppercase = /[A-Z]/.test($signupStore.password);
-    $: ruleNumber = /[0-9]/.test($signupStore.password);
-    $: ruleSpecial = /[^a-zA-Z0-9]/.test($signupStore.password);
-
     let page1Direction = true;
     let page2Direction = true;
 

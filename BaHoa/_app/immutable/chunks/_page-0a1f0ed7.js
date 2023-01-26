@@ -1,0 +1,1 @@
+const o=async({parent:e,url:t})=>{const a=await e(),r=t.searchParams.get("redirect");return{...a,redirect:r}},c=Object.freeze(Object.defineProperty({__proto__:null,load:o},Symbol.toStringTag,{value:"Module"}));export{c as _,o as l};

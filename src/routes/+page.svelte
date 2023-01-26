@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { userAuthStore } from '$lib/userAuthStore';
 	import { faAngleDown, faRightToBracket, faUserPlus, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
     import type { PageData } from './$types';
 	import Logo from "$lib/Logo.svelte";
@@ -33,18 +34,18 @@
     const {scrollYProgress} = useViewportScroll();
 
     let previousScrollYLeft: number;
-    $: console.log('window scroll Y percent', $scrollYProgress);
+    // $: console.log('window scroll Y percent', $scrollYProgress);
     $: scrollYLeft = (1 - ($scrollYProgress ?? 0)) * windowHeight;
-    $: console.log('window scroll y left', scrollYLeft);
+    // $: console.log('window scroll y left', scrollYLeft);
     $: {
         if ($scrollYProgress > 0.95 && scrollYLeft < previousScrollYLeft) {
             const scrollChange = previousScrollYLeft - scrollYLeft;
             scrollMotionValue.ref.scrollBy(0, scrollChange);
-            console.log('scroll change', scrollChange);
+            // console.log('scroll change', scrollChange);
         } else if ($scrollYProgress < 0.05 && scrollYLeft > previousScrollYLeft) {
             const scrollChange = previousScrollYLeft - scrollYLeft;
             scrollMotionValue.ref.scrollBy(0, scrollChange);
-            console.log('scroll change', scrollChange);
+            // console.log('scroll change', scrollChange);
         }
         previousScrollYLeft = scrollYLeft;
     }
@@ -71,18 +72,18 @@
     let previousFeaturesScrollYLeft: number;
     const scrollMotionValue = useElementScroll(null);
     $: featuresScrollY = scrollMotionValue.scrollYProgress;
-    $: console.log('features scroll Y percent', $featuresScrollY);
+    // $: console.debug('features scroll Y percent', $featuresScrollY);
     $: featuresScrollYLeft = (1 - ($featuresScrollY ?? 0)) * featuresHeight;
-    $: console.log('features scroll Y left', featuresScrollYLeft);
+    // $: console.log('features scroll Y left', featuresScrollYLeft);
     $: {
         if ($featuresScrollY > 0.95 || featuresScrollYLeft < previousFeaturesScrollYLeft ) {
             const scrollChange = previousFeaturesScrollYLeft - featuresScrollYLeft;
             windowScroll += scrollChange;
-            console.log('scroll change', scrollChange);
+            // console.log('scroll change', scrollChange);
         } else if ($featuresScrollY < 0.05 || featuresScrollYLeft > previousFeaturesScrollYLeft) {
             const scrollChange = previousFeaturesScrollYLeft - featuresScrollYLeft;
             windowScroll -= scrollChange;
-            console.log('scroll change', scrollChange);
+            // console.log('scroll change', scrollChange);
         }
         previousFeaturesScrollYLeft = featuresScrollYLeft;
     }
@@ -95,7 +96,7 @@
 <svelte:window on:resize={() => recalcWindow()} bind:scrollY={windowScroll} />
 <svelte:body  />
 
-<div class="contents" style="--header-height:{scrollYLeft !== undefined ? Math.max(scrollYLeft, toPx('8rem')) : toPx('100vh')}px;">
+<div class="contents" style="--header-height:{scrollYLeft !== undefined || $userAuthStore ? Math.max(scrollYLeft, toPx('8rem')) : toPx('100vh')}px;">
     <AnimateSharedLayout type="crossfade">
         <Motion let:motion={grid} animate={{zIndex: cardOpen.every(v => v === false) ? 10 : 0}} transition={{ delay: cardOpen.every(v => v === false) ? 0.25 : 0, duration: 0, }}>
             <div use:grid class="top-0 left-0 fixed w-screen h-[var(--header-height)] bg-slate-400 dark:bg-slate-600 grid px-8 [grid-template-columns:_var(--grid-template-columns)] [grid-template-rows:_var(--grid-template-rows)]" 
@@ -111,9 +112,9 @@
                         class:justify-start={scrollYLeft <= headerBreakpoint} use:svg><Logo></Logo></div>
                 </Motion>
                 <div class="grid grid-cols-1 grid-rows-1">
-                    {#if data.firebaseAuth.currentUser}
+                    {#if $userAuthStore}
                     <div class="grid grid-rows-2 justify-center gap-4 [grid-column:1] [grid-row:1]"  transition:fly={{x: 200}}>
-                        <a href="/smokers" class="h-16 rounded-full text-white shadow flex justify-between items-center bg-orange-500 px-6 place-self-end"><span>Welcome {data.firebaseAuth.currentUser.displayName ? data.firebaseAuth.currentUser.displayName : data.firebaseAuth.currentUser.email}!</span><Icon data={faChevronRight} scale={2} /></a>
+                        <a href="/smokers" class="h-16 rounded-full text-white shadow flex justify-between items-center bg-orange-500 px-6 place-self-end"><span>Welcome {$userAuthStore.displayName ? $userAuthStore.displayName : $userAuthStore.email}!</span><Icon data={faChevronRight} scale={2} /></a>
                         <button type="button" class="h-16 border-2 border-orange-500 dark:border font-extrabold shadow bg-slate-300 dark:bg-transparent rounded-l-full rounded-r-full text-orange-500 flex justify-between items-center px-6" on:click={() => data.firebaseAuth.signOut()}><Icon data={faChevronLeft} scale={2} /><span class="ml-2">Sign Out</span></button>
                     </div>
                     {:else}
@@ -147,6 +148,7 @@
                 </div>
             </div>
         </Motion>
+        {#if !$userAuthStore}
         <Motion let:motion={layout} layout transition={{ duration: 0.05, easings: ['easeIn'] }}>
             <div class="fixed w-full top-0 left-0 grid [grid-template-rows:_var(--header-height)_calc(100vh_-_10rem)] grid-cols-1 overflow-auto" bind:this={scrollMotionValue.ref} bind:clientHeight={featuresHeight}>
                 <div></div>
@@ -159,6 +161,7 @@
                 </div>
             </div>
         </Motion>
+        {/if}
     </AnimateSharedLayout>
-    <div class="h-[200vh]"></div>
+    <div class:h-[200vh]={!$userAuthStore} class:h-screen={$userAuthStore}></div>
 </div>
