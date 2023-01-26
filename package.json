@@ -5,7 +5,7 @@
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "cd functions && npm run build && cd .. && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
