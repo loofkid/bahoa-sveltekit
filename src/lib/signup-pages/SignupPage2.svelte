@@ -9,18 +9,18 @@
     export let pageMotion: (node: any) => void;
 
     let nameInput: HTMLInputElement;
-    let lastNameInput: HTMLInputElement;
     let address1Input: HTMLInputElement;
     let address2Input: HTMLInputElement;
     let cityInput: HTMLInputElement;
     let stateInput: HTMLSelectElement;
     let zipInput: HTMLInputElement;
+    let stateChanged = false;
 
 
     $: {
-        if ($signupStore.zip.length > 5)
+        if ($signupStore.zip.length == 5)
         {
-            $signupStore.zip = `${$signupStore.zip.slice(0, 5)}-${$signupStore.zip.slice(6, 10)}`;
+            $signupStore.zip = `${$signupStore.zip.slice(0, 5)}-${$signupStore.zip.slice(5, 10)}`;
         }
         if ($signupStore.zip.match(/\D.*[^-]/))
         {
@@ -28,17 +28,19 @@
         }
     }
 
+    const onStateChanged = () => {
+        stateChanged = true;
+    }
+
 
     const onSubmit = () => {
-        nameInput.setCustomValidity('');
-        lastNameInput.setCustomValidity('');
+        nameInput.setCustomValidity('')
         address1Input.setCustomValidity('');
         address2Input.setCustomValidity('');
         cityInput.setCustomValidity('');
         stateInput.setCustomValidity('');
         zipInput.setCustomValidity('');
         if (nameInput.checkValidity() && 
-            lastNameInput.checkValidity() && 
             address1Input.checkValidity() && 
             address2Input.checkValidity() && 
             cityInput.checkValidity() && 
@@ -50,14 +52,12 @@
         else
         {
             if (!nameInput.checkValidity()) nameInput.setCustomValidity('Invalid first name');
-            if (!lastNameInput.checkValidity()) lastNameInput.setCustomValidity('Invalid last name');
             if (!address1Input.checkValidity()) address1Input.setCustomValidity('Invalid address');
             if (!address2Input.checkValidity()) address2Input.setCustomValidity('Invalid address');
             if (!cityInput.checkValidity()) cityInput.setCustomValidity('Invalid city');
             if (!stateInput.checkValidity()) stateInput.setCustomValidity('Invalid state');
             if (!zipInput.checkValidity()) zipInput.setCustomValidity('Invalid zip');
             nameInput.reportValidity();
-            lastNameInput.reportValidity();
             address1Input.reportValidity();
             address2Input.reportValidity();
             cityInput.reportValidity();
@@ -71,19 +71,19 @@
 <form use:pageMotion class="grid grid-cols-1 gap-2 lg:gap-4 items-center [grid-column:1] [grid-row:1]" on:submit={onSubmit} enterkeyhint="go">
     <input type="text" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
         dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="full name" bind:value={$signupStore.name} required bind:this={nameInput} autocapitalize="words" autocomplete="name" />
+        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800 [&:user-invalid]:border-red-600 [&:user-invalid]:dark:border-red-800" placeholder="full name" bind:value={$signupStore.name} required bind:this={nameInput} autocapitalize="words" autocomplete="name" />
     <input type="text" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
         dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="address 1" bind:value={$signupStore.address1} required bind:this={address1Input} autocapitalize="words" autocomplete="address-line1" /> 
+        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800 [&:user-invalid]:border-red-600 [&:user-invalid]:dark:border-red-800" placeholder="address 1" bind:value={$signupStore.address1} required bind:this={address1Input} autocapitalize="words" autocomplete="address-line1" /> 
     <input type="text" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
         dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="address 2" bind:value={$signupStore.address2} bind:this={address2Input} autocapitalize="words" autocomplete="address-line2" />
+        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800 [&:user-invalid]:border-red-600 [&:user-invalid]:dark:border-red-800" placeholder="address 2" bind:value={$signupStore.address2} bind:this={address2Input} autocapitalize="words" autocomplete="address-line2" />
     <input type="text" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
         dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="city" bind:value={$signupStore.city} required bind:this={cityInput} autocapitalize="words" autocomplete="address-level2" />
+        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800 [&:user-invalid]:border-red-600 [&:user-invalid]:dark:border-red-800" placeholder="city" bind:value={$signupStore.city} required bind:this={cityInput} autocapitalize="words" autocomplete="address-level2" />
     <select class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
         dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="state" bind:value={$signupStore.state} required bind:this={stateInput} autocomplete="address-level1">
+        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none [&:user-invalid]:border-red-600 [&:user-invalid]:dark:border-red-800" class:invalid:border-red-600={stateChanged} class:invalid:dark:border-red-800={stateChanged} placeholder="state" bind:value={$signupStore.state} required bind:this={stateInput} autocomplete="address-level1" on:select={onStateChanged}>
         <option value="" disabled selected>state</option>
         <option value="AL">Alabama</option>
         <option value="AK">Alaska</option>
@@ -139,7 +139,7 @@
     </select>
     <input type="text" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
         dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="zip code" bind:value={$signupStore.zip} pattern="^\d&#123;5}(?:-\d&#123;4})?$" maxlength="10" required bind:this={zipInput} inputmode="numeric" autocomplete="postal-code" />
+        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800 [&:user-invalid]:border-red-600 [&:user-invalid]:dark:border-red-800" placeholder="zip code" bind:value={$signupStore.zip} pattern="^\d&#123;5}(?:-\d&#123;4})?$" maxlength="10" required bind:this={zipInput} inputmode="numeric" autocomplete="postal-code" />
     <div class="flex justify-between items-center">
         <button type="button" class="h-11 w-28 rounded-sm bg-orange-500 text-white text-center" on:click={() => dispatch('back')}>Back</button>
         <button type="submit" class="h-11 w-28 rounded-sm bg-orange-500 text-white text-center">Submit</button>

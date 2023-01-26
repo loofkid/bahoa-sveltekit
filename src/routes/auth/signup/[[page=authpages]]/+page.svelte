@@ -87,6 +87,7 @@
                 createdAt: new Date(),
                 updatedAt: new Date(),
             });
+            $signupStore = null;
             console.log("Document written with ID: ", docRef.id);
             goto('/smokers', {invalidateAll: true,})
         } catch (error) {
