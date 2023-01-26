@@ -20,8 +20,17 @@
     }
 
     data.firebaseAuth.onAuthStateChanged(() => {
+        console.log('photo path', data.firebaseAuth.currentUser?.photoURL);
         data = {...data};
     });
+
+    $: {
+        data.firebaseAuth.currentUser?.photoURL !== null;
+        data.firebaseAuth.currentUser?.displayName !== null;
+        data = {...data};
+    }
+
+    $: hasPhoto = data.firebaseAuth.currentUser?.photoURL !== null;
 
     let showMenu = false;
 
@@ -31,6 +40,7 @@
     $: cellWidth = Math.max(toPx("14rem"), cellWidth, buttonWidth);
     let buttonWidth: number;
 
+    /// @ts-ignore
     const menuItems: ComponentProps<LoggedInMenuItem>[] = data.menuItems;
 
     let menuButton: HTMLButtonElement;
@@ -59,14 +69,17 @@
                 <div class="absolute top-auto right-8 sm:w-[var(--button-width)] overflow-hidden sm:overflow-visible" bind:clientWidth={buttonWidth} style="--button-width:{buttonWidth};--menu-cell-width:{Math.max(toPx("14rem"),cellWidth,buttonWidth)}">
                     <button use:motion type="button" class="grid justify-center items-center
                         [grid-column:1] [grid-row:1] h-16 w-16 
-                        sm:w-auto bg-orange-500 sm:px-8 text-white shadow overflow-hidden" on:click|self={() => showMenu = !showMenu} transition:fly={{x: 200}} bind:this={menuButton}>
+                        sm:w-auto bg-orange-500 sm:pl-8 text-white shadow overflow-hidden" class:sm:pr-8={!hasPhoto} on:click|self={() => showMenu = !showMenu} transition:fly={{x: 200}} bind:this={menuButton}>
                         {#if windowWidth > data.tailwindBreakpoints.sm}
                         <div class="flex justify-center items-center overflow-hidden" on:click={() => showMenu = !showMenu} on:keypress>
-                            Hello {data.firebaseAuth.currentUser.displayName ? data.firebaseAuth.currentUser.displayName : data.firebaseAuth.currentUser.email}!
+                            <div>Hello {data.firebaseAuth.currentUser.displayName ? data.firebaseAuth.currentUser.displayName : data.firebaseAuth.currentUser.email}!</div>
+                            {#if hasPhoto}
+                            <img class="rounded-full h-14 w-14 ml-2 mr-1" src={data.firebaseAuth.currentUser.photoURL} title="Profile Picture" alt="user"/>
+                            {/if}
                         </div>
                         {:else}
                         <div class="rounded-full bg-clip-border flex justify-center items-center w-16 h-16" on:click={() => showMenu = !showMenu} on:keypress>
-                            {#if data.firebaseAuth.currentUser.photoURL}
+                            {#if hasPhoto}
                             <img class="rounded-full" src={data.firebaseAuth.currentUser.photoURL} title="Profile Picture" alt="user"/>
                             {:else}
                             <Icon data={faBars} scale={1.5} />

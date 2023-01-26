@@ -8,7 +8,6 @@
     import toPx from "to-px";
     import { fly } from 'svelte/transition';
 	import Card from '$lib/Card.svelte';
-	import { refEqual } from 'firebase/firestore/lite';
     
     let windowHeight: number;
     let windowWidth: number;

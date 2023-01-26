@@ -10,7 +10,7 @@
         "firebase-debug.*.log"
       ],
       "predeploy": [
-        "pnpm --prefix \"$RESOURCE_DIR\" run build"
+        "npm --prefix \"$RESOURCE_DIR\" run build"
       ]
     }
   ,
@@ -29,14 +29,6 @@
       "**/node_modules/**"
     ],
     "rewrites": [
-      {
-        "source": "*",
-        "function": "sveltePublicSSR"
-      },
-      {
-        "source": "/auth/**",
-        "function": "sveltePublicSSR"
-      },
       {
         "source": "**",
         "function": "svelteSSR"

@@ -138,6 +138,6 @@
         </Motion>
     </div>
     <div class="flex justify-end items-center">
-        <button type="submit" class="h-11 w-28 rounded-sm bg-orange-500 text-white">Next</button>
+        <button type="submit" class="h-11 w-28 rounded-sm bg-orange-500 text-white text-center">Next</button>
     </div>
 </form>

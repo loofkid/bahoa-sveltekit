@@ -12,8 +12,15 @@ const config = {
 		}),
 	],
 	kit: {
-		adapter: firebase()
-	}
+		adapter: firebase({
+			esbuildOptions: (defaultOptions) => {
+				return {
+					...defaultOptions,
+					external: ['sharp', 'exiftool-vendored', '@resvg/resvg-js'],
+				}
+			}
+		}),
+	},
 };
 
 export default config;

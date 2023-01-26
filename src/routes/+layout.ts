@@ -1,10 +1,11 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore/lite";
+import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage"
 import type { LayoutLoad, LayoutLoadEvent } from './$types';
-import type { SvelteComponentTyped, ComponentProps } from "svelte";
-import type LoggedInMenuItem from "$lib/LoggedInMenuItem.svelte";
+import { userAuthStore } from "$lib/userAuthStore";
+import { browser } from "$app/environment";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,6 +27,7 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 // type ComponentProps<T extends SvelteComponentTyped> = T extends SvelteComponentTyped<infer R> ? R : unknown;
 
@@ -53,11 +55,30 @@ const menuItems = [
 ];
 
 export const load: LayoutLoad = (({data}: LayoutLoadEvent) => {
+    auth.onAuthStateChanged((user) => {
+        userAuthStore.set(user);
+    });
+
+    if (auth.currentUser) {
+        userAuthStore.set(auth.currentUser);
+    }
+
+    if (browser) {
+        userAuthStore.subscribe((user) => {
+            if (user)
+                localStorage.setItem('userAuthStore', JSON.stringify(user));
+            else
+                localStorage.removeItem('userAuthStore');
+        });
+    }
+    
+
     return {...data, 
         firebaseApp: app,
         // firebaseAnalytics: analytics,
         firestoreDatabase: db,
         firebaseAuth: auth,
+        firebaseStorage: storage,
         menuItems: menuItems,
     }
 }) satisfies LayoutLoad;

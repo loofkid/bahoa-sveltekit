@@ -4,17 +4,7 @@ let svelteSSRServer: any;
 export const svelteSSR = functions.region("us-central1").https.onRequest(async (request, response) => {
     if (!svelteSSRServer) {
         functions.logger.info("Initialising SvelteKit SSR entry");
-        svelteSSRServer = (await import("../lib/svelteSSR/index.js")).default;
-        functions.logger.info("SvelteKit SSR entry initialised!");
-    }
-    functions.logger.info("Requested resource: " + request.originalUrl);
-    return svelteSSRServer(request, response);
-});
-
-export const sveltePublicSSR = functions.region("us-central1").https.onRequest(async (request, response) => {
-    if (!svelteSSRServer) {
-        functions.logger.info("Initialising SvelteKit SSR entry");
-        svelteSSRServer = (await import("../lib/sveltePublicSSR/index.js")).default;
+        svelteSSRServer = (await import("../lib/svelteSSR/index")).default;
         functions.logger.info("SvelteKit SSR entry initialised!");
     }
     functions.logger.info("Requested resource: " + request.originalUrl);

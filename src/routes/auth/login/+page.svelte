@@ -7,7 +7,6 @@
     import type { PageData } from './$types';
     import { Motion, AnimatePresence } from 'svelte-motion';
 	import { FirebaseError } from 'firebase/app';
-	import { SvelteComponent } from 'svelte';
     let username: string;
     let password: string;
     let rememberMe: boolean = false;
@@ -29,7 +28,7 @@
                 await signInWithEmailAndPassword(data.firebaseAuth, username, password);
                 if (rememberMe) data.firebaseAuth.setPersistence(browserLocalPersistence);
                 else data.firebaseAuth.setPersistence(browserSessionPersistence);
-                goto('/smokers')
+                goto('/smokers', { invalidateAll: true });
             }
             else {
                 if (!usernameInput.checkValidity()) usernameInput.setCustomValidity('Invalid email');
@@ -59,7 +58,7 @@
     <h1 class="text-2xl text-zinc-800 dark:text-zinc-200">Log In</h1>
     <form class="grid grid-cols-1 [grid-template-rows:_3.5rem_auto_3.5rem] lg:[grid-template-rows:_1fr_auto_1fr] 
         lg:border-2 lg:border-orange-500 w-full lg:w-[30rem] 
-        rounded-xl lg:p-8 gap-1 lg:gap-4 items-center" on:submit|preventDefault={onSubmit}>
+        lg:rounded-xl lg:p-8 gap-1 lg:gap-4 items-center" on:submit|preventDefault={onSubmit}>
         <input type="email" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
             dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
             dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="email" on:blur={() => usernameInput.checkValidity()} on:invalid={(event) => console.log(event)} bind:value={username} bind:this={usernameInput} required inputmode="email" autocorrect="off" />

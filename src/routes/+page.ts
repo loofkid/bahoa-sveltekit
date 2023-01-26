@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { collection, getDocs } from 'firebase/firestore';
 import { signInAnonymously } from 'firebase/auth';
 
 export const load: PageLoad = async ({ parent, fetch, params }) => {
