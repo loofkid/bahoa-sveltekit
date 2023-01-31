@@ -17,3 +17,31 @@ declare interface SignUpData {
     state: string;
     zip: string;
 }
+
+type DocumentData = import("firebase/firestore").DocumentData;
+
+declare interface BasicUserData extends DocumentData {
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
+    phoneNumber?: string;
+}
+
+declare interface UserData extends BasicUserData {
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    zip: string;
+    phoneNumber?: string;
+    createdAt: import("firebase/firestore").Timestamp;
+    updatedAt: import("firebase/firestore").Timestamp;
+}
+
+declare interface ProfileData extends BasicUserData {
+    emailAddress: string;
+    name: string;
+    phoneNumber: string;
+}

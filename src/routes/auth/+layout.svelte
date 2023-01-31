@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { breakpoint } from '$lib/breakpointStore';
 	import { cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
     import Logo from "$lib/Logo.svelte";
@@ -89,7 +90,7 @@
                         {/if}
                     </button>
                     {#if showMenu}
-                    <LoggedInMenu bind:cellWidth={cellWidth} setCellWidth={Math.max(toPx("14rem"),cellWidth,buttonWidth)} menuItems={menuItems} breakpoint={Object.keys(data.tailwindBreakpoints).sort((a, b) => data.tailwindBreakpoints[a] - data.tailwindBreakpoints[b]).find(key => windowWidth < data.tailwindBreakpoints[key])} bind:showMenu={showMenu} />
+                    <LoggedInMenu bind:cellWidth={cellWidth} setCellWidth={Math.max(toPx("14rem"),cellWidth,buttonWidth)} menuItems={menuItems} bind:showMenu={showMenu} />
                     {/if}
                 </div>
                 {:else}

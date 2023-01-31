@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { breakpoint } from '$lib/breakpointStore';
 	import { userAuthStore } from '$lib/userAuthStore';
 	import { faAngleDown, faRightToBracket, faUserPlus, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
     import type { PageData } from './$types';
@@ -91,6 +92,7 @@
 
 <svelte:head>
     <title>Home | Bà Hỏa Smart Smokers</title>
+    <meta name="description" content="Bà Hỏa Smart Smokers Home Page">
 </svelte:head>
 
 <svelte:window on:resize={() => recalcWindow()} bind:scrollY={windowScroll} />
@@ -99,7 +101,7 @@
 <div class="contents" style="--header-height:{scrollYLeft !== undefined || $userAuthStore ? Math.max(scrollYLeft, toPx('8rem')) : toPx('100vh')}px;">
     <AnimateSharedLayout type="crossfade">
         <Motion let:motion={grid} animate={{zIndex: cardOpen.every(v => v === false) ? 10 : 0}} transition={{ delay: cardOpen.every(v => v === false) ? 0.25 : 0, duration: 0, }}>
-            <div use:grid class="top-0 left-0 fixed w-screen h-[var(--header-height)] bg-slate-400 dark:bg-slate-600 grid px-8 [grid-template-columns:_var(--grid-template-columns)] [grid-template-rows:_var(--grid-template-rows)]" 
+            <div use:grid class="top-0 left-0 fixed w-screen h-[var(--header-height)] bg-slate-400 dark:bg-slate-600 grid px-8 [grid-template-columns:_var(--grid-template-columns)] [grid-template-rows:_var(--grid-template-rows)] will-change-auto" 
                 class:z-10={cardOpen.every(v => v === false)}
                 class:justify-center={scrollYLeft > headerBreakpoint}
                 class:items-stretch={scrollYLeft > headerBreakpoint}
@@ -121,10 +123,10 @@
                     <Motion let:motion={grid2} layout transition={{ duration: 0.05, easings: ['easeIn']}}>
                         <div class="grid items-center [grid-column:1] [grid-row:1]" use:grid2 class:justify-center={scrollYLeft > headerBreakpoint} class:justify-end={scrollYLeft <= headerBreakpoint}>
                             <Motion let:motion={grid3} layout transition={{ duration: 0.1 }}>
-                                <div class="grid justify-center items-center gap-8" class:grid-flow-row={scrollYLeft > buttonsBreakpoint} class:grid-flow-col={scrollYLeft <= buttonsBreakpoint || windowWidth <= tailwindBreakpoints.lg} use:grid3>
+                                <div class="grid justify-center items-center gap-8" class:grid-flow-row={scrollYLeft > buttonsBreakpoint} class:grid-flow-col={scrollYLeft <= buttonsBreakpoint || !$breakpoint.includes('lg')} use:grid3>
                                     <Motion let:motion={button1} layout transition={{ duration: 0.05, easings: ['easeIn'] }}>
-                                        <a use:button1 class="h-16 rounded-l-full rounded-r-full bg-orange-500 text-white shadow flex justify-center items-center" href="/auth/signup" title="Sign Up" class:w-48={scrollYLeft > headerBreakpoint} class:w-16={scrollYLeft <= headerBreakpoint || windowWidth <= tailwindBreakpoints.lg}>
-                                            {#if scrollYLeft > headerBreakpoint && windowWidth > tailwindBreakpoints.lg}
+                                        <a use:button1 class="h-16 rounded-l-full rounded-r-full bg-orange-500 text-white shadow flex justify-center items-center" href="/auth/signup" title="Sign Up" class:w-48={scrollYLeft > headerBreakpoint} class:w-16={scrollYLeft <= headerBreakpoint || !$breakpoint.includes('lg')}>
+                                            {#if scrollYLeft > headerBreakpoint && $breakpoint.includes('lg')}
                                                 Sign Up!
                                             {:else}
                                                 <Icon scale={1.5} data={faUserPlus} />
@@ -132,8 +134,8 @@
                                         </a>
                                     </Motion>
                                     <Motion let:motion={button2} layout transition={{ duration: 0.05, easings: ['easeIn'] }}>
-                                        <a use:button2 class="h-16 border-2 border-orange-500 dark:border font-extrabold shadow bg-slate-300 dark:bg-transparent rounded-l-full rounded-r-full text-orange-500 flex justify-center items-center" href="/auth/login" title="Log In" class:w-48={scrollYLeft > headerBreakpoint} class:w-16={scrollYLeft <= headerBreakpoint || windowWidth <= tailwindBreakpoints.lg}>
-                                            {#if scrollYLeft > headerBreakpoint && windowWidth > tailwindBreakpoints.lg}
+                                        <a use:button2 class="h-16 border-2 border-orange-500 dark:border font-extrabold shadow bg-slate-300 dark:bg-transparent rounded-l-full rounded-r-full text-orange-500 flex justify-center items-center" href="/auth/login" title="Log In" class:w-48={scrollYLeft > headerBreakpoint} class:w-16={scrollYLeft <= headerBreakpoint || !$breakpoint.includes('lg')}>
+                                            {#if scrollYLeft > headerBreakpoint && $breakpoint.includes('lg')}
                                                 Log In
                                             {:else}
                                                 <Icon scale={1.5} data={faRightToBracket} />
