@@ -154,7 +154,7 @@
         <Motion let:motion={layout} layout transition={{ duration: 0.05, easings: ['easeIn'] }}>
             <div class="fixed w-full top-0 left-0 grid [grid-template-rows:_var(--header-height)_calc(100vh_-_10rem)] grid-cols-1 overflow-auto" bind:this={scrollMotionValue.ref} bind:clientHeight={featuresHeight}>
                 <div></div>
-                <div use:layout class="justify-items-center grid [grid-template-columns:repeat(auto-fit,_minmax(18rem,_1fr))] [grid-template-rows:repeat(auto-fill,_18rem)] gap-3 pt-3 pb-3" >
+                <div use:layout class="justify-items-center md:max-w-screen-xl justify-self-center grid [grid-template-columns:repeat(auto-fit,_minmax(18rem,_1fr))] [grid-template-rows:repeat(auto-fill,_18rem)] gap-3 pt-3 pb-3" >
                     <AnimateSharedLayout type="crossfade">
                     {#each data.features as feature, index}
                         <Card title={feature.title} iconName={feature.icon} text={feature.text} bind:open={cardOpen[index]}></Card>

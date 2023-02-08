@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { userAuthStore } from "$lib/userAuthStore";
-	import { AnimateSharedLayout, Motion } from "svelte-motion";
+	import { Motion } from "svelte-motion";
     import type { PageData } from "./$types";
     import { breakpoint } from "$lib/breakpointStore";
-	import toPX from "to-px";
 	import { Icon } from "svelte-awesome";
 	import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 	import { profileStore } from "$lib/profileDataStore";
+    import { InputElement, HTMLInputElementProps } from "$lib/InputElement";
+	import SelectElement from "$lib/InputElement/SelectElement.svelte";
 
 
     export let data: PageData;
@@ -17,25 +18,147 @@
 
     $: console.log('user data', data.userData);
 
-    $profileStore.emailAddress = $userAuthStore.email;
-    $profileStore.name = $userAuthStore.displayName;
-    $profileStore.address1 = data.userData.address1;
-    $profileStore.address2 = data.userData.address2;
-    $profileStore.city = data.userData.city;
-    $profileStore.state = data.userData.state;
-    $profileStore.zip = data.userData.zip;
-    $profileStore.phoneNumber = $userAuthStore.phoneNumber;
+    $profileStore.emailAddress = $userAuthStore.email ?? '';
+    $profileStore.name = $userAuthStore.displayName ?? '';
+    $profileStore.address1 = data.userData.address1 ?? '';
+    $profileStore.address2 = data.userData.address2 ?? '';
+    $profileStore.city = data.userData.city ?? '';
+    $profileStore.state = data.userData.state ?? '';
+    $profileStore.zip = data.userData.zip ?? '';
+    $profileStore.phoneNumber = $userAuthStore.phoneNumber ?? '';
 
-    const fieldNameMap = {
-        emailAddress: 'email address',
-        name: 'name',
-        address1: 'address 1',
-        address2: 'address 2',
-        city: 'city',
-        state: 'state',
-        zip: 'zip',
-        phoneNumber: 'phone number'
-    }
+    const fieldMap: HTMLInputElementProps[] = [
+        {
+            name: 'emailAddress',
+            label: 'email address',
+            type: 'email',
+            required: true,
+            inputmode: 'email',
+            autocomplete: 'email',
+            autocorrect: 'off',
+            autocapitalize: 'off',
+        },
+        {
+            name: 'name',
+            label: 'name',
+            type: 'text',
+            required: true,
+            inputmode: 'text',
+            autocomplete: 'name',
+            autocorrect: 'off',
+            autocapitalize: 'words',
+        },
+        {
+            name: 'address1',
+            label: 'address 1',
+            type: 'text',
+            required: true,
+            inputmode: 'text',
+            autocomplete: 'address-line1',
+            autocorrect: 'off',
+            autocapitalize: 'words',
+        },
+        {
+            name: 'address2',
+            label: 'address 2',
+            type: 'text',
+            required: false,
+            inputmode: 'text',
+            autocomplete: 'address-line2',
+            autocorrect: 'off',
+            autocapitalize: 'words',
+        },
+        {
+            name: 'city',
+            label: 'city',
+            type: 'text',
+            required: true,
+            inputmode: 'text',
+            autocomplete: 'address-level2',
+            autocorrect: 'off',
+            autocapitalize: 'words',
+        },
+        {
+            name: 'state',
+            label: 'state',
+            type: 'select',
+            required: true,
+            autocomplete: 'address-level1',
+            values: [
+                { text: 'Alabama', value: 'AL' },
+                { text: 'Alaska', value: 'AK' },
+                { text: 'Arizona', value: 'AZ' },
+                { text: 'Arkansas', value: 'AR' },
+                { text: 'California', value: 'CA' },
+                { text: 'Colorado', value: 'CO' },
+                { text: 'Connecticut', value: 'CT' },
+                { text: 'Delaware', value: 'DE' },
+                { text: 'District Of Columbia', value: 'DC' },
+                { text: 'Florida', value: 'FL' },
+                { text: 'Georgia', value: 'GA' },
+                { text: 'Hawaii', value: 'HI' },
+                { text: 'Idaho', value: 'ID' },
+                { text: 'Illinois', value: 'IL' },
+                { text: 'Indiana', value: 'IN' },
+                { text: 'Iowa', value: 'IA' },
+                { text: 'Kansas', value: 'KS' },
+                { text: 'Kentucky', value: 'KY' },
+                { text: 'Louisiana', value: 'LA' },
+                { text: 'Maine', value: 'ME' },
+                { text: 'Maryland', value: 'MD' },
+                { text: 'Massachusetts', value: 'MA' },
+                { text: 'Michigan', value: 'MI' },
+                { text: 'Minnesota', value: 'MN' },
+                { text: 'Mississippi', value: 'MS' },
+                { text: 'Missouri', value: 'MO' },
+                { text: 'Montana', value: 'MT' },
+                { text: 'Nebraska', value: 'NE' },
+                { text: 'Nevada', value: 'NV' },
+                { text: 'New Hampshire', value: 'NH' },
+                { text: 'New Jersey', value: 'NJ' },
+                { text: 'New Mexico', value: 'NM' },
+                { text: 'New York', value: 'NY' },
+                { text: 'North Carolina', value: 'NC' },
+                { text: 'North Dakota', value: 'ND' },
+                { text: 'Ohio', value: 'OH' },
+                { text: 'Oklahoma', value: 'OK' },
+                { text: 'Oregon', value: 'OR' },
+                { text: 'Pennsylvania', value: 'PA' },
+                { text: 'Rhode Island', value: 'RI' },
+                { text: 'South Carolina', value: 'SC' },
+                { text: 'South Dakota', value: 'SD' },
+                { text: 'Tennessee', value: 'TN' },
+                { text: 'Texas', value: 'TX' },
+                { text: 'Utah', value: 'UT' },
+                { text: 'Vermont', value: 'VT' },
+                { text: 'Virginia', value: 'VA' },
+                { text: 'Washington', value: 'WA' },
+                { text: 'West Virginia', value: 'WV' },
+                { text: 'Wisconsin', value: 'WI' },
+                { text: 'Wyoming', value: 'WY' },
+            ]
+        },
+        {
+            name: 'zip',
+            label: 'zip',
+            type: 'text',
+            required: true,
+            inputmode: 'numeric',
+            autocomplete: 'postal-code',
+            autocorrect: 'off',
+            autocapitalize: 'off',
+        },
+        {
+            name: 'phoneNumber',
+            label: 'phone number',
+            type: 'tel',
+            required: false,
+            inputmode: 'tel',
+            autocomplete: 'tel',
+            autocorrect: 'off',
+            autocapitalize: 'off',
+        }
+    ];
 </script>
 
 <svelte:head>
@@ -88,15 +211,14 @@
                     </div>
                 </div>
             </div>
-            <div class="[grid-area:fields] md:h-[31.5rem] pt-4 w-full grid px-8 text-zinc-900 dark:text-zinc-200 [grid-template-rows:_auto_4.5rem] drop-shadow-lg bg-zinc-200 dark:bg-zinc-500 translate-y-[var(--summary-translate)] md:translate-y-0">
-                <form class="w-full grid [grid-template-rows:_repeat(auto-fill,3.5rem)] gap-4 items-stretch overflow-auto pr-2" id="profile-form">
-                {#each Object.keys($profileStore) as key}
-                    <div>
-                        <label class="text-sm" for={key}>{fieldNameMap[key]}</label>
-                        <input type="text" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
-                        dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black w-full
-                        dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" id={key} bind:value={$profileStore[key]} />
-                    </div>
+            <div class="[grid-area:fields] md:h-[31.5rem] pt-4 w-full grid px-8 text-zinc-900 dark:text-zinc-200 [grid-template-rows:_auto_4.5rem] bg-zinc-200 dark:bg-zinc-500 translate-y-[var(--summary-translate)] md:translate-y-0">
+                <form class="w-full grid [grid-template-rows:_repeat(auto-fill,3.5rem)] gap-4 items-stretch overflow-auto pr-2" id="profile-form" on:submit|preventDefault|stopPropagation>
+                {#each fieldMap as field}
+                    {#if field.type !== 'select'}
+                    <InputElement bind:value={$profileStore[field.name]} {...field} />
+                    {:else}
+                    <SelectElement bind:value={$profileStore[field.name]} {...field} />
+                    {/if}
                 {/each}
                 </form>
                 <div class="flex justify-end items-center place-self-stretch py-4 border-t border-t-zinc-400 dark:border-t-zinc-600">
@@ -108,7 +230,7 @@
             </div>
         </div>
         <div class="[grid-area:smokers] h-[15rem] translate-y-[var(--summary-translate)] md:translate-y-0">
-            <div class="flex justify-center items-center h-full">
+            <div class="grid [grid-template-rows:_repeat(auto-fill,2rem)] gap-1">
                 <div class="text-lg text-zinc-900 dark:text-zinc-200">smokers</div>
             </div>
         </div>

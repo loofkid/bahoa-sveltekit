@@ -1,0 +1,37 @@
+export class HTMLInputElementProps {
+    label: string;
+    accept?: string;
+    alt?: string;
+    autocomplete: InputAutocomplete;
+    autofocus? = false;
+    checked? = false;
+    disabled? = false;
+    form?: string;
+    formaction?: string;
+    formenctype?: string;
+    formmethod?: string;
+    formnovalidate?: boolean;
+    formtarget?: string;
+    height?: number;
+    list?: string;
+    max?: number;
+    maxlength?: number;
+    min?: number;
+    minlength?: number;
+    multiple?: boolean;
+    name: string;
+    pattern?: string;
+    placeholder?: string;
+    readonly? = false;
+    required? = false;
+    size?: number;
+    src?: string;
+    step?: number;
+    type: InputType;
+    value?: string;
+    width?: number;
+    inputmode?: InputMode;
+    autocorrect?: InputAutocorrect;
+    autocapitalize?: InputAutocapitalize;
+    values?: string[] | { text: string; value: string }[];
+}
