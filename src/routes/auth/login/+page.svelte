@@ -30,7 +30,7 @@
                 await signInWithEmailAndPassword(data.firebaseAuth, username, password);
                 if (rememberMe) data.firebaseAuth.setPersistence(browserLocalPersistence);
                 else data.firebaseAuth.setPersistence(browserSessionPersistence);
-                goto(data.redirect ?? '/smokers', { invalidateAll: true });
+                goto(data.redirect && data.redirect.match(/^\/(?!\/|\.)/) ? data.redirect : '/smokers', { invalidateAll: true });
             }
             else {
                 if (!usernameInput.checkValidity()) usernameInput.setCustomValidity('Invalid email');
