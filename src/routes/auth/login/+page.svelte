@@ -28,9 +28,9 @@
             if (usernameInput.checkValidity() && passwordInput.checkValidity())
             {
                 await signInWithEmailAndPassword(data.firebaseAuth, username, password);
-                if (rememberMe) data.firebaseAuth.setPersistence(browserLocalPersistence);
-                else data.firebaseAuth.setPersistence(browserSessionPersistence);
-                goto(data.redirect ?? '/smokers', { invalidateAll: true });
+                if (rememberMe) await data.firebaseAuth.setPersistence(browserLocalPersistence);
+                else await data.firebaseAuth.setPersistence(browserSessionPersistence);
+                await goto(data.redirect ?? '/smokers', { invalidateAll: true });
             }
             else {
                 if (!usernameInput.checkValidity()) usernameInput.setCustomValidity('Invalid email');
@@ -63,11 +63,11 @@
         lg:rounded-xl lg:p-8 gap-1 lg:gap-4 items-center" on:submit|preventDefault={onSubmit}>
         <input type="email" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
             dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-            dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="email" on:blur={() => usernameInput.checkValidity()} on:invalid={(event) => console.log(event)} bind:value={username} bind:this={usernameInput} required inputmode="email" autocorrect="off" autocomplete="email" />
+            dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="email" on:blur={() => { usernameInput.setCustomValidity(''); usernameInput.checkValidity(); }} on:input={() => usernameInput.setCustomValidity('')} on:invalid={(event) => console.log(event)} bind:value={username} bind:this={usernameInput} required inputmode="email" autocorrect="off" autocomplete="email" />
         <div class="grid items-center">
             <input type="password" class="bg-zinc-200 dark:bg-zinc-500 form-input placeholder-shown:dark:!border-zinc-300 placeholder-shown:!border-zinc-900 focus:ring-0 text-zinc-800 focus:!border-orange-500
             dark:placeholder:text-zinc-200 dark:border-zinc-300 rounded-sm h-11 focus:dark:text-white focus:text-black
-            dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="password" on:blur={() => passwordInput.checkValidity()} on:invalid={(event) => console.log(event)} bind:value={password} pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*$' required autocorrect="off" autocomplete="current-password" bind:this={passwordInput} />
+            dark:text-zinc-300 focus:dark:!border-zinc-50 focus:outline-none invalid:border-red-600 invalid:dark:border-red-800" placeholder="password" on:blur={() => { passwordInput.setCustomValidity(''); passwordInput.checkValidity(); }} on:input={() => passwordInput.setCustomValidity('')}  on:invalid={(event) => console.log(event)} bind:value={password} pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*$' required autocorrect="off" autocomplete="current-password" bind:this={passwordInput} />
             <Motion let:motion={layout}>
             <div use:layout class="flex justify-between text-sm text-zinc-800 dark:text-zinc-300 ml-1">
                 <button on:click={() => showPasswordRules = !showPasswordRules} type="button" class="">

@@ -3,7 +3,6 @@
     import "../app.css";
 
     import {page} from '$app/stores';
-	import PageTransition from "$lib/PageTransition.svelte";
 	import { onMount } from "svelte";
 	import { breakpoint } from "$lib/breakpointStore";
 

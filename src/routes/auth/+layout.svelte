@@ -56,7 +56,7 @@
 <svelte:body on:click={closeMenu} />
 
 <div class="contents" style="--header-height:{toPx('8rem')}px;">
-    <div class="grid [grid-template-rows:_var(--header-height)_auto] overflow-x-hidden">
+    <div class="grid [grid-template-rows:_var(--header-height)_auto] overflow-x-hidden [grid-column:1] [grid-row:1]">
         <div class="h-[var(--header-height)] bg-slate-400 dark:bg-slate-600 grid px-2 [grid-template-columns:_1fr_1fr] [grid-template-rows:_1fr] justify-between items-center">
             <div class="grid items-center justify-start"><a href="/"><Logo></Logo></a></div>
             <div class="grid items-center justify-end overflow-hidden pr-8 sm:pr-12 rounded-b">

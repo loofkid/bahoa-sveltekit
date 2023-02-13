@@ -6,6 +6,8 @@ import { getStorage } from "firebase/storage"
 import type { LayoutLoad, LayoutLoadEvent } from './$types';
 import { userAuthStore } from "$lib/userAuthStore";
 import { browser } from "$app/environment";
+import { goto } from "$app/navigation";
+import { redirect } from "@sveltejs/kit";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -50,17 +52,24 @@ const menuItems = [
   {
       name: "Logout",
       icon: "right-from-bracket",
-      action: () => auth.signOut(),
+      action: async () => {
+            await auth.signOut();
+        },
   },
 ];
 
 export const load: LayoutLoad = (({data}: LayoutLoadEvent) => {
-    auth.onAuthStateChanged((user) => {
-        userAuthStore.set(user);
+    auth.onAuthStateChanged(async (user) => {
+        if (user) userAuthStore.set(user);
+        else {
+            userAuthStore.set(null);
+        }
     });
 
     if (auth.currentUser) {
         userAuthStore.set(auth.currentUser);
+    } else {
+        userAuthStore.set(null);
     }
 
     if (browser) {
